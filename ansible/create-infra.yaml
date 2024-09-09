@@ -5,7 +5,7 @@
   tasks:
     - name: Create an EC2 instance
       amazon.aws.ec2_instance:
-        name: "Valeriya-FWS-TestInstance-App"
+        name: "Valeriya-FWS-TestInstance-App-1"
         key_name: 'k8s-valeriya'
         exact_count: 1
         region: us-east-1
@@ -14,7 +14,8 @@
           assign_public_ip: true
         security_group: 'sg-0f152bcdb1c680b0e'
         instance_type: 't2.micro'
-          #image_id: 'ami-0e86e20dae9224db8'
+          #rhel was behaving erroneously, so back to ubuntu:
+          # image_id: 'ami-0e86e20dae9224db8'
           #need to run it on RHEL image, so:
         image_id: 'ami-0583d8c7a9c35822c'
         state: present
