@@ -91,3 +91,15 @@
     command:
       docker build -t testapp /home/ubuntu/FWS-CICD
     delegate_to: localhost
+
+      # - name: tag the image
+      # command: 
+      # docker tag fwscicd:latest valeriyak/fwscicd:latest
+
+      # - name: push docker image
+      #  command:
+      # docker push valeriyak/fwscicd:latest
+
+    # - name: start the image
+    # command:
+      # docker run -d --name testapp-server -p 8000:8000
