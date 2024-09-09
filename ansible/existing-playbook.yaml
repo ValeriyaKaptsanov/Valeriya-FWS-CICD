@@ -1,0 +1,65 @@
+---
+- name: test-check-metadata
+  hosts: all
+
+  tasks:
+    - amazon.aws.ec2_metadata_facts:
+
+    - debug:
+        var: ansible_ec2_instance_id
+
+    - amazon.aws.ec2_tag_info:
+        region: us-east-1
+        resource: "{{ ansible_ec2_instance_id }}"
+      delegate_to: localhost
+      register: instance_tags
+
+    - debug: 
+        var: instance_tags.tags
+
+    - debug:
+        var: instance_tags.tags.Service
+
+    - debug: 
+        msg: "Nginx!"
+      when: instance_tags.tags.Service  == "nginx"
+
+    - debug:
+        msg: "Mysql!"
+      when: instance_tags.tags.Service == "mysql"
+
+
+
+    - name: update instance packages
+      command:
+       apt update
+      become: true   
+      become_user: root
+
+    - name: install mysql, temporary bandaid fix
+      package:
+        name: mysql-server
+        state: present
+        update_cache: true
+      when: instance_tags.tags.Service == "mysql"
+      become: true
+      become_user: root
+
+    - name: Install Nginx when service is equal to nginx.
+      package:
+        name: "{{instance_tags.tags.Service}}"
+        state: present
+        update_cache: true
+      when: instance_tags.tags.Service == "nginx"
+      become: true
+      become_user: root
+
+    - name: enabling + starting services
+      service:
+        name: "{{instance_tags.tags.Service}}"
+        state: started
+        enabled: true
+      become: true
+      become_user: root
+
+
