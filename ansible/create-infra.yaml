@@ -15,7 +15,7 @@
         security_group: 'sg-0f152bcdb1c680b0e'
         instance_type: 't2.micro'
           #rhel was behaving erroneously, so back to ubuntu:
-          # image_id: 'ami-0e86e20dae9224db8'
+        image_id: 'ami-0e86e20dae9224db8'
           #need to run it on RHEL image, so:
-        image_id: 'ami-0583d8c7a9c35822c'
+          #image_id: 'ami-0583d8c7a9c35822c'
         state: present
