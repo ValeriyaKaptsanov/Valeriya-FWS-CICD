@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script{
-			withCredentials([aws(credentialsId: "01cd5edb-761a-4bdf-8e2c-21505463c9a4")]) {
+			withCredentials([aws(credentialsId: "01cd5edb-761a-4bdf-8e2c-21505463c9ai")]) {
 			
 			}
                     }
@@ -30,4 +30,3 @@ pipeline {
             }
         }
     }
-}
