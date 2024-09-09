@@ -1,6 +1,8 @@
 ---
 - name: Setup web server
   hosts: app
+  become: True
+  become_user: root
      # gather_facts: True
      # - vars_files:
      # - group_vars/env
@@ -76,5 +78,16 @@
     become_user: root
 
 
+  - name: run the docker service
+    service:
+      name: docker
+      state: started
+      enabled: true
+    become: true
+    become_user: root
 
 
+  - name: build a docker image
+    command:
+      docker build -t testapp /home/ubuntu/FWS-CICD
+    delegate_to: localhost
