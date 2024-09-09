@@ -14,12 +14,55 @@
     become_user: root
 
   - name: install other packages
-    yum:
+    package:
      name:
        - git
        - python-pip
        - yum-utils
      state: present
-     become: True
-     become_user: root
- 
+    become: True
+    become_user: root
+
+
+
+  - name: installing required packages
+    package:
+      name:
+       - ca-certificates
+       - curl
+       - gnupg
+       - software-properties-common
+    become: true
+    become_user: root
+
+
+  - name: installing the docker keyring
+    ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+  - ansible.builtin.apt_key: 
+        url: https://download.docker.com/linux/ubuntu/gpg 
+        keyring: /etc/apt/keyrings/docker.asc
+        state: present
+
+  - ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+            $(. /etc/os-release && echo "$VERSION_CODENAME") stable
+        filename: docker
+        state: present
+
+  - name: installing more docker-related packages
+    package:
+      name:
+       - docker-ce
+       - docker-ce-cli
+       - containerd.io
+       - docker-buildx-plugin
+       - docker-compose-plugin
+    become: true
+    become_user: root
+
+
