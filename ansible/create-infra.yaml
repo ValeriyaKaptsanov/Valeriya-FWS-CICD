@@ -12,7 +12,7 @@
         vpc_subnet_id: 'subnet-0992c1cd4b004598c'
         network:
           assign_public_ip: true
-          security_group: 'sg-0f152bcdb1c680b0e'
+        security_group: 'sg-0f152bcdb1c680b0e'
         instance_type: 't2.micro'
           #image_id: 'ami-0e86e20dae9224db8'
           #need to run it on RHEL image, so:

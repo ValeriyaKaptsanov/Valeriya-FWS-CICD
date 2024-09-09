@@ -1,0 +1,25 @@
+---
+- name: Setup web server
+  hosts: app
+     # gather_facts: True
+     # - vars_files:
+     # - group_vars/env
+     # - group_vars/colman.env
+     # - group_vars/docker.env
+  tasks:
+  - name: install epel release
+    command:
+      sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -y
+    become: True
+    become_user: root
+
+  - name: install other packages
+    yum:
+     name:
+       - git
+       - python-pip
+       - yum-utils
+     state: present
+     become: True
+     become_user: root
+ 

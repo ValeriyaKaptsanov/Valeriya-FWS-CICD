@@ -14,21 +14,11 @@
       delegate_to: localhost
       register: instance_tags
 
-    - debug: 
+    - debug:
         var: instance_tags.tags
 
     - debug:
         var: instance_tags.tags.Service
-
-    - debug: 
-        msg: "Nginx!"
-      when: instance_tags.tags.Service  == "nginx"
-
-    - debug:
-        msg: "Mysql!"
-      when: instance_tags.tags.Service == "mysql"
-
-
 
     - name: update instance packages
       command:
@@ -53,6 +43,28 @@
       when: instance_tags.tags.Service == "nginx"
       become: true
       become_user: root
+
+        # - name: Setup web server
+       #  hosts: app
+       # user: centos
+       # become: True
+       # gather_facts: True
+       # vars_files:
+       # - group_vars/env
+       # - group_vars/colman.env
+       # - group_vars/docker.env
+       #  tasks:
+    - name: install epel release package + others
+      yum:
+       name:
+         - epel-release
+         - git
+         - python-pip
+         - yum-utils
+       state: present
+      become: True
+      become_user: root
+      
 
     - name: enabling + starting services
       service:
