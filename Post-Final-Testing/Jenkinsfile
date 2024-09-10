@@ -19,10 +19,17 @@ pipeline {
                  echo 'Empty'
             }
         }
+	stage('Execute playbook'){
+		steps {
+			 withCredentials([aws(credentialsId: "06820e6f-366a-4e85-9fcc-12cc90ce5d79")]) {
+				ansiblePlaybook playbook:'create-infra.yaml'
+			}
+		}
+	}
         stage('Deploy') {
             steps {
                 script{
-			withCredentials([aws(credentialsId: "01cd5edb-761a-4bdf-8e2c-21505463c9ai")]) {
+			withCredentials([aws(credentialsId: "06820e6f-366a-4e85-9fcc-12cc90ce5d79")]) {
 			
 			}
                     }

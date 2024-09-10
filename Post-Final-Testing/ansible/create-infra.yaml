@@ -6,13 +6,13 @@
     - name: Create an EC2 instance
       amazon.aws.ec2_instance:
         name: "Valeriya-FWS-TestInstance-App-1"
-        key_name: 'k8s-valeriya'
+        key_name: 'main-key'
         exact_count: 1
         region: us-east-1
-        vpc_subnet_id: 'subnet-0992c1cd4b004598c'
+        vpc_subnet_id: 'subnet-0b1f3dc4771cc1ab5'
         network:
           assign_public_ip: true
-        security_group: 'sg-0f152bcdb1c680b0e'
+        security_group: 'sg-04a7f9607d7eb99ff'
         instance_type: 't2.micro'
           #rhel was behaving erroneously, so back to ubuntu:
         image_id: 'ami-0e86e20dae9224db8'
