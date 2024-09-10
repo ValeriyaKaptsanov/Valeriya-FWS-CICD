@@ -1,0 +1,105 @@
+---
+- name: Setup web server
+  hosts: app
+  become: True
+  become_user: root
+     # gather_facts: True
+     # - vars_files:
+     # - group_vars/env
+     # - group_vars/colman.env
+     # - group_vars/docker.env
+  tasks:
+    # - name: install epel release
+    # command:
+    # sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -y
+      # become: True
+      # become_user: root
+
+  - name: update packages
+    command:
+      apt update
+    become: true
+    become_user: root
+
+  - name: install other packages
+    package:
+     name:
+       - git
+       - python3-pip
+         # - yum-utils
+     state: present
+    become: True
+    become_user: root
+
+
+
+  - name: installing required packages
+    package:
+      name:
+       - apt-transport-https
+       - ca-certificates
+       - curl
+       - gnupg
+       - software-properties-common
+    become: true
+    become_user: root
+
+
+  - name: installing the docker keyring
+    ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+  - ansible.builtin.apt_key: 
+        url: https://download.docker.com/linux/ubuntu/gpg 
+          # keyring: /etc/apt/keyrings/docker.asc
+        state: present
+
+  - ansible.builtin.apt_repository:
+    # repo: >-
+    #     deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    #       $(. /etc/os-release && echo "$VERSION_CODENAME") stable | \
+    #                                                       sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    #   filename: docker
+    #   state: present
+      repo: deb https://download.docker.com/linux/ubuntu focal stable
+      state: present
+
+  - name: installing more docker-related packages
+    package:
+      name:
+       - docker-ce
+       - docker-ce-cli
+       - containerd.io
+       - docker-buildx-plugin
+       - docker-compose-plugin
+    become: true
+    become_user: root
+
+
+  - name: run the docker service
+    service:
+      name: docker
+      state: started
+      enabled: true
+    become: true
+    become_user: root
+
+
+  - name: build a docker image
+    command:
+      docker build -t testapp /home/ubuntu/FWS-CICD
+    delegate_to: localhost
+
+      # - name: tag the image
+      # command: 
+      # docker tag fwscicd:latest valeriyak/fwscicd:latest
+
+      # - name: push docker image
+      #  command:
+      # docker push valeriyak/fwscicd:latest
+
+    # - name: start the image
+    # command:
+      # docker run -d --name testapp-server -p 8000:8000
