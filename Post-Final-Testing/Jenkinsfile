@@ -21,7 +21,7 @@ pipeline {
         }
 	stage('Execute playbook'){
 		steps {
-			 withAWS(region: 'us-east-1', credentials: "06820e6f-366a-4e85-9fcc-12cc90ce5d79") {
+			withCredentials([aws(credentialsId: "06820e6f-366a-4e85-9fcc-12cc90ce5d79")]) {
 				ansiblePlaybook playbook:'ansible/create-infra.yaml'
 			}
 		}
