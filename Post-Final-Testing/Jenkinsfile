@@ -22,7 +22,7 @@ pipeline {
 	stage('Execute playbook'){
 		steps {
 			 withCredentials([aws(credentialsId: "06820e6f-366a-4e85-9fcc-12cc90ce5d79")]) {
-				ansiblePlaybook playbook:'create-infra.yaml'
+				ansiblePlaybook playbook:'ansible/create-infra.yaml'
 			}
 		}
 	}
