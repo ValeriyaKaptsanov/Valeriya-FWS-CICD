@@ -19,5 +19,3 @@
           #need to run it on RHEL image, so:
           #image_id: 'ami-0583d8c7a9c35822c'
         state: present
-      become: true
-      become_user: root
